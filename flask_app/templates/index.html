@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+	<div id="my-app">
+		A really simple interface:
+		<form id="uploadForm">
+			<input type="file" id="fileInput" name="fileInput">
+			<button type="submit" id="uploadButton">Upload</button>
+		</form>
+
+		Accuracy Score: <span id="accuracy"></span>
+		<br />
+		Predictions: <div id="predictions"></div>
+	</div>
+</body>
+<script>
+	let uploadForm = document.getElementById("uploadForm");
+
+	uploadForm.addEventListener('submit', (e) => {
+		e.preventDefault()
+		if (e.target[0].files.length) {
+			const file = e.target[0].files[0];
+			const formData = new FormData();
+			formData.append('uploaded_file', file, "test_vars.csv");
+			fetch('/submit_variables', {
+				method: 'POST',
+				body: formData
+			})
+				.then(response => response.json())
+				.then(data => {
+					let accuracy = document.getElementById('accuracy')
+					accuracy.innerText = data.data.accuracy
+					let predictions = document.getElementById('predictions')
+					predictions.innerHTML = data.data.predictions
+				})
+				.catch(error => {
+					console.error(error);
+					alert('Error uploading file');
+				});
+		}
+	})
+</script>
+
+</html>
