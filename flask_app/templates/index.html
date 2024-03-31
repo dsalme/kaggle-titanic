@@ -1,45 +1,72 @@
 <!DOCTYPE html>
 <html>
+
 <head></head>
+
 <body>
+	<script type="importmap">
+		{
+		  "imports": {
+			"vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+		  }
+		}
+	</script>
 	<div id="my-app">
-		A really simple interface:
-		<form id="uploadForm">
+		${ message }$
+		<form @submit.prevent="onSubmit" id="uploadForm">
 			<input type="file" id="fileInput" name="fileInput">
 			<button type="submit" id="uploadButton">Upload</button>
 		</form>
 
-		Accuracy Score: <span id="accuracy"></span>
+		Accuracy Score: ${ accuracy }$
 		<br />
-		Predictions: <div id="predictions"></div>
+		Predictions: <div id="predictions">
+			${ predictions }$
+		</div>
 	</div>
 </body>
-<script>
-	let uploadForm = document.getElementById("uploadForm");
+<script type="module">
+	import { createApp, ref } from 'vue'
 
-	uploadForm.addEventListener('submit', (e) => {
-		e.preventDefault()
-		if (e.target[0].files.length) {
-			const file = e.target[0].files[0];
-			const formData = new FormData();
-			formData.append('uploaded_file', file, "test_vars.csv");
-			fetch('/submit_variables', {
-				method: 'POST',
-				body: formData
-			})
-				.then(response => response.json())
-				.then(data => {
-					let accuracy = document.getElementById('accuracy')
-					accuracy.innerText = data.data.accuracy
-					let predictions = document.getElementById('predictions')
-					predictions.innerHTML = data.data.predictions
-				})
-				.catch(error => {
-					console.error(error);
-					alert('Error uploading file');
-				});
+	const app = createApp({
+		delimiters: ["${", "}$"],
+		compilerOptions: {
+			delimiters: ["${", "}$"]
+		},
+		setup() {
+			const message = 'A really simple interface'
+			const predictions = ref()
+			const accuracy = ref()
+			function onSubmit(e) {
+				e.preventDefault()
+				if (e.target[0].files.length) {
+					const file = e.target[0].files[0];
+					const formData = new FormData();
+					formData.append('uploaded_file', file, "test_vars.csv");
+					fetch('/submit_variables', {
+						method: 'POST',
+						body: formData
+					})
+						.then(response => response.json())
+						.then(data => {
+							accuracy.value = data.data.accuracy
+							predictions.value = data.data.predictions
+						})
+						.catch(error => {
+							console.error(error);
+							alert('Error uploading file');
+						});
+				}
+			}
+			return {
+				message,
+				onSubmit,
+				predictions,
+				accuracy
+			}
 		}
 	})
+	app.mount('#my-app')
 </script>
 
 </html>

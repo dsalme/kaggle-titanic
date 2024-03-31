@@ -90,4 +90,4 @@ def submit_predict():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', message="lalala")
