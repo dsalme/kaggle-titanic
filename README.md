@@ -6,11 +6,19 @@ It was trained by following [this guide](https://risx3.github.io/titanic-analysi
 ### Endpoints
 - `/`
 It's the root url, which returns a frontend view
+
+
 - `/submit_prediction`
 Lets you submit a csv file for running model predictions.
 The csv file should have the following columns:
 `Age,SibSp,Parch,Fare,male,Q,S,2,3`
 And should have exactly 268 (plus 1 for the headers, so 269) rows.
+
+Params: (form-data)
+```
+- `uploaded_file`
+It expects a csv file with the specified format
+```
 
 ### How to run it
 The app is composed by one docker container, to run it, run this in your console after cloning it:
