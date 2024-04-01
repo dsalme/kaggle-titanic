@@ -15,6 +15,9 @@ And should have exactly 268 (plus 1 for the headers, so 269) rows.
 ### How to run it
 The app is composed by one docker container, to run it, run this in your console after cloning it:
 - `docker-compose up --build`
+After some time building and installing every dependency, it will start a service in:
+- `localhost:8081`
+(I used 8081 just because it's very common that you have some other app running in port 8000, to change the port update the docker-compose file's port mapping configuration to whichever port you want, a.i.: `{port}:8000`  
 
 ### How its structured
 The app consists in a Flask App, which serves a web app through the `/` route.
