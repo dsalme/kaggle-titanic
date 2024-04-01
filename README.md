@@ -1,5 +1,5 @@
 ## Simple Flask + Vue app that serves the [Titanic ML competition Model](https://risx3.github.io/titanic-analysis/)
-### Submit your predictions
+### Submit your variables for running predictions using the Titanic ML Model
 
 It was trained by following [this guide](https://risx3.github.io/titanic-analysis/)
 
@@ -14,7 +14,7 @@ And should have exactly 268 (plus 1 for the headers, so 269) rows.
 
 ### How to run it
 The app is composed by one docker container, to run it, run this in your console after cloning it:
-`docker-compose up --build`
+- `docker-compose up --build`
 
 ### How its structured
 The app consists in a Flask App, which serves a web app through the `/` route.
