@@ -1,7 +1,45 @@
 <!DOCTYPE html>
 <html>
 
-<head></head>
+<head>
+	<style>
+		body {
+			background-image: url({{url_for('static', filename='titanic_pixel.webp')}});
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		.main {
+			display: grid;
+			width: 100%;
+			gap: 5px;
+			grid-template-columns: 40% 60%;
+			grid-template-areas:
+				"head"
+				"form"
+				"acc"
+				"predict";
+		}
+		.header {
+			grid-area: head
+		}
+		.grid-form{
+			grid-area: form
+		}
+		.grid-acc {
+			grid-area: acc
+		}
+		.grid-predict {
+			grid-area: predict;
+			border: 1px solid lightgray;
+			border-radius: 10px;
+			padding: 2px;
+			background-color: rgba(0, 0, 0, 0.1);
+		}
+		.no-things {
+			grid: none;
+		}
+	</style>
+</head>
 
 <body>
 	<script type="importmap">
@@ -12,17 +50,27 @@
 		}
 	</script>
 	<div id="my-app">
-		${ message }$
-		<form @submit.prevent="onSubmit" id="uploadForm">
-			<input type="file" id="fileInput" name="fileInput">
-			<button type="submit" id="uploadButton">Upload</button>
-		</form>
-
-		Accuracy Score: ${ accuracy }$
-		<br />
-		Predictions: <div id="predictions">
-			${ predictions }$
-		</div>
+		<main class="main">
+			<section class="header">
+				${ message }$
+			</section>
+			<section class="grid-form">
+				<form @submit.prevent="onSubmit" id="uploadForm">
+					<input type="file" id="fileInput" name="fileInput">
+					<button type="submit" id="uploadButton">Upload</button>
+				</form>
+			</section>
+			
+			<section class="grid-acc">
+				Accuracy Score: ${ accuracy }$
+			</section>
+			<br />
+			<section class="grid-predict">
+				Predictions: 
+				${ predictions }$
+			</section>
+			<section class="no-things"></section>
+		</main>
 	</div>
 </body>
 <script type="module">
@@ -42,7 +90,7 @@
 				if (e.target[0].files.length) {
 					const file = e.target[0].files[0];
 					const formData = new FormData();
-					formData.append('uploaded_file', file, "test_vars.csv");
+					formData.append('uploaded_file', file);
 					fetch('/submit_variables', {
 						method: 'POST',
 						body: formData
