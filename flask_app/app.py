@@ -87,7 +87,7 @@ def submit_predict() -> Dict[str, Any]:
     if uploaded_file:
         try:
             test_vars_df = pd.read_csv(uploaded_file)
-            uploaded_predict = logmodel.predict(test_vars_df.iloc[:1])
+            uploaded_predict = logmodel.predict(test_vars_df)
             accuracy = accuracy_score(y_test, uploaded_predict)
             app.logger.info(f"uploaded file accuracy test: {accuracy}")
             return jsonify({
@@ -103,4 +103,4 @@ def submit_predict() -> Dict[str, Any]:
 
 @app.route('/')
 def index():
-    return render_template('index.html', message="lalala")
+    return render_template('index.html')
